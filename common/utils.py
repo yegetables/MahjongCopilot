@@ -169,7 +169,7 @@ def is_certificate_installed(cert_file:str) -> tuple[bool, str]:
         
         if sys.platform == "win32":
             # Use certutil to look up the certificate by its serial number in the Root store
-            cmd = ['certutil', '-store', 'Root', serial_number]
+            cmd= f"powershell -Command start-process certutil -ArgumentList '-addstore','Root','{serial_number}' -verb RunAs"
             store_found_phrase = serial_number
         elif sys.platform == "darwin":
             # TODO test on MacOS
@@ -201,13 +201,14 @@ def install_root_cert(cert_file:str):
     """
     # Install cert. If the cert exists, system will skip installation
     if sys.platform == "win32":
-        print(f'"{cert_file}"')
-        full_command = ["certutil","-addstore","Root",cert_file]
+        # print(f'"{cert_file}"')
+        # full_command = ["certutil","-addstore","Root",cert_file]
         # full_command = [
         #     'powershell', '-Command', 
         #     f"Start-Process 'certutil' -ArgumentList '-addstore', 'Root', '{cert_file}' -Wait -Verb 'RunAs';"
         #     f"exit $LASTEXITCODE"
         # ]
+        full_command= f"powershell -Command start-process certutil -ArgumentList '-addstore','Root','{cert_file}' -verb RunAs"
         p=subprocess.run(full_command, **sub_run_args())
         stdout, stderr = p.stdout, p.stderr        
     elif sys.platform == "darwin":
