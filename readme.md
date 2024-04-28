@@ -55,13 +55,24 @@ python main.py
 3. Install dependencies from requirements.txt
 4. Main entry: main.py
 
-```batch
+```powershell
+# 初始化开发环境
 git clone https://github.com/latorc/MahjongCopilot.git
 cd MahjongCopilot
 python -m venv venv
-CALL venv\Scripts\activate.bat
+# 进入venv虚拟环境
+./venv/Scripts/activate.ps1
+which pip # local/.venv/Scripts/pip
 pip install -r requirements.txt
-python main.py
+$Env:PLAYWRIGHT_BROWSERS_PATH = 0
+#playwright install --dry-run  查看预安装路径是不是本地venv文件夹？
+playwright install chromium
+python main.py 
+```
+```powershell
+#打包exe文件
+pip install pyinstaller
+pyinstaller .\MahjongCopilot.spec -y  #打包后的exe文件在dist文件夹下
 ```
 
 ## 截图 / Screenshots
